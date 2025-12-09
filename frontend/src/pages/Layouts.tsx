@@ -5,26 +5,22 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
-  Link,
+  Link as MuiLink,
   Chip,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout";
 import LayoutCard from "../components/LayoutCard";
 import TemplatePreview from "../components/TemplatePreview";
 import Classic from "../assets/images/classic_professional.jpg";
 import Modern from "../assets/images/minimalist-cv-template_23-2148906637.avif";
 
-/**
- * Example templates data. Replace thumbnails with real images or server URLs.
- * Thumbnails can be PNG/SVG or base64 placeholders while developing.
- */
-
 export const TEMPLATES = [
   {
     id: "layout-1",
     name: "Classic Professional",
     description:
-      "Clean two-column layout with bold name heading and a left sidebar for skills.",
+      "Clean two-column layout with a strong heading and sidebar for skills.",
     thumbnail: Classic,
     sampleHtml: `
       <div style="font-family: Arial; padding: 20px;">
@@ -40,7 +36,7 @@ export const TEMPLATES = [
     id: "layout-2",
     name: "Modern Minimal",
     description:
-      "Minimal, clean layout focusing on spacing, fonts, and readability.",
+      "Minimal layout focused on whitespace, typography, and readability.",
     thumbnail: Modern,
     sampleHtml: `
       <div style="font-family: Helvetica; padding: 20px;">
@@ -55,7 +51,7 @@ export const TEMPLATES = [
     id: "layout-3",
     name: "Creative One-Page",
     description:
-      "Stylish one-page layout highlighting projects and creativity.",
+      "Stylish one-page layout ideal for portfolios and creative roles.",
     thumbnail:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
     sampleHtml: `
@@ -77,41 +73,68 @@ export default function LayoutsPage() {
   const handlePreview = (id: string) => setPreviewId(id);
   const handleClosePreview = () => setPreviewId(null);
   const handleUseTemplate = (id: string) => {
-    // navigate to editor with layout query param
     const url = `/editor?layout=${encodeURIComponent(id)}`;
     window.location.href = url;
   };
 
   return (
     <DashboardLayout>
-      <Container sx={{ py: 3 }}>
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
-          <Link color="inherit" href="/dashboard">
-            Dashboard
-          </Link>
-          <Typography color="text.primary">Templates</Typography>
-        </Breadcrumbs>
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: 4,
+        }}
+      >
+        {/* Top breadcrumb & meta */}
+        <Box sx={{ mb: 3 }}>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
+            <MuiLink
+              component={RouterLink}
+              underline="hover"
+              color="inherit"
+              to="/dashboard"
+            >
+              Dashboard
+            </MuiLink>
+            <Typography color="text.primary">Templates</Typography>
+          </Breadcrumbs>
 
+          <Typography
+            variant="overline"
+            color="text.secondary"
+            sx={{ letterSpacing: 1 }}
+          >
+            CV templates
+          </Typography>
+        </Box>
+
+        {/* Header row */}
         <Box
           display="flex"
-          alignItems="center"
+          alignItems={{ xs: "flex-start", sm: "center" }}
           justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
           mb={3}
+          gap={2}
         >
           <Box>
-            <Typography variant="h5" fontWeight={700}>
+            <Typography variant="h5" fontWeight={700} gutterBottom>
               Choose a layout
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Pick a professional layout and customize content in the editor.
+              Pick a layout that matches your profile and customize it in the editor.
             </Typography>
           </Box>
 
-          <Box>
-            <Chip label="3 templates" color="primary" />
-          </Box>
+          <Chip
+            label={`${templates.length} templates`}
+            color="primary"
+            variant="outlined"
+            sx={{ fontWeight: 500 }}
+          />
         </Box>
 
+        {/* Template cards grid */}
         <Grid container spacing={3}>
           {templates.map((t) => (
             <Grid item xs={12} sm={6} md={4} key={t.id}>
