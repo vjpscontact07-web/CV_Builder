@@ -17,8 +17,9 @@ type Props = {
   template?: {
     id: string;
     name: string;
-    thumbnail: string;
     description?: string;
+    renderPreview?: React.ReactNode;   // ✅ added
+    thumbnail?: string;
     sampleHtml?: string;
   };
   onUse?: (id: string) => void;
@@ -26,7 +27,7 @@ type Props = {
 
 export default function TemplatePreview({ open, onClose, template, onUse }: Props) {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md")); // better mobile UX [web:36]
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   if (!template) return null;
 
@@ -35,18 +36,17 @@ export default function TemplatePreview({ open, onClose, template, onUse }: Prop
       open={open}
       onClose={onClose}
       fullWidth
-      maxWidth="md"
+      maxWidth="lg"
       fullScreen={fullScreen}
       PaperProps={{
-        sx: {
-          borderRadius: fullScreen ? 0 : 3,
-        },
+        sx: { borderRadius: fullScreen ? 0 : 3 },
       }}
     >
       <DialogTitle sx={{ pb: 1.5 }}>
         <Typography variant="h6" fontWeight={700}>
           {template.name}
         </Typography>
+
         {template.description && (
           <Typography variant="body2" color="text.secondary" mt={0.5}>
             {template.description}
@@ -64,25 +64,51 @@ export default function TemplatePreview({ open, onClose, template, onUse }: Prop
             flexDirection: { xs: "column", md: "row" },
           }}
         >
-          {/* Large visual preview */}
+          {/* LEFT — LIVE TEMPLATE PREVIEW */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Box
               sx={{
                 width: "100%",
-                height: { xs: 320, md: 420 },
+                height: { xs: 350, md: 480 },
                 borderRadius: 2,
                 bgcolor: "#F3F4F6",
                 border: "1px solid rgba(15,23,42,0.06)",
                 overflow: "hidden",
                 boxShadow: 2,
-                backgroundImage: `url(${template.thumbnail})`,
-                backgroundSize: "cover",
-                backgroundPosition: "top center",
+                position: "relative",
               }}
-            />
+            >
+              {/* If React component preview exists, show it */}
+              {template.renderPreview ? (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    transform: "scale(0.7)",
+                    transformOrigin: "top left",
+                    width: "142%",
+                    height: "142%",
+                    overflow: "hidden",
+                  }}
+                >
+                  {template.renderPreview}
+                </Box>
+              ) : (
+                // Fallback to thumbnail if no preview component
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundImage: `url(${template.thumbnail})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "top center",
+                  }}
+                />
+              )}
+            </Box>
           </Box>
 
-          {/* Right info panel */}
+          {/* RIGHT — INFO PANEL */}
           <Box
             sx={{
               width: { xs: "100%", md: 360 },
@@ -91,11 +117,12 @@ export default function TemplatePreview({ open, onClose, template, onUse }: Prop
               gap: 2,
             }}
           >
-            {template.sampleHtml && (
+            {template.sampleHtml ? (
               <>
                 <Typography variant="subtitle2" color="text.secondary">
                   Sample content
                 </Typography>
+
                 <Box
                   sx={{
                     borderRadius: 1.5,
@@ -109,11 +136,9 @@ export default function TemplatePreview({ open, onClose, template, onUse }: Prop
                   dangerouslySetInnerHTML={{ __html: template.sampleHtml }}
                 />
               </>
-            )}
-
-            {!template.sampleHtml && (
+            ) : (
               <Typography variant="body2" color="text.secondary">
-                This layout is fully customizable in the editor. Choose it to start editing your CV content.
+                This layout is fully customizable in the editor. Select it to start editing your CV.
               </Typography>
             )}
           </Box>
@@ -127,12 +152,12 @@ export default function TemplatePreview({ open, onClose, template, onUse }: Prop
           pt: 1.5,
           display: "flex",
           justifyContent: "space-between",
-          gap: 1,
         }}
       >
         <Button onClick={onClose} color="inherit">
           Close
         </Button>
+
         <Button
           variant="contained"
           onClick={() => onUse?.(template.id)}

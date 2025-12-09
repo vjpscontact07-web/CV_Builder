@@ -17,7 +17,7 @@ export default function AuthLayout({ title, children }: any) {
         elevation={3}
         sx={{
           width: "100%",
-          maxWidth: "460px",   // perfect size for professional auth pages
+          maxWidth: "460px",   
           padding: "40px 36px",
           borderRadius: 4,
           backgroundColor: "#fff",
