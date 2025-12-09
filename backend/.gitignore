@@ -1,0 +1,31 @@
+### Backend (.gitignore) - Node / Express / TypeScript
+
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+
+# environment
+.env
+.env.*
+
+# logs
+logs/
+*.log
+
+# coverage
+coverage/
+
+# editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
