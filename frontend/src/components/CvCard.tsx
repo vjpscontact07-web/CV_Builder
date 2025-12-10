@@ -1,9 +1,8 @@
+// CvCard.tsx (updated with smaller fonts & better alignment)
 import {
   Box,
   Button,
-  Card,
   CardContent,
-  CardActions,
   Typography,
   Chip,
 } from "@mui/material";
@@ -32,38 +31,43 @@ export default function CvCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <Card
-        elevation={0}
+      <Box
         sx={{
-          height: 330,
-          borderRadius: 4,
-          overflow: "hidden",
-          border: "1px solid #e5e7eb",
+          height: "100%",
+          minHeight: 300,
+          borderRadius: 2,
+          border: "1px solid #e2e8f0",
           background: "#ffffff",
-          boxShadow: "0 8px 28px rgba(0,0,0,0.08)",
-          transition: "0.25s all ease",
           display: "flex",
           flexDirection: "column",
-
+          overflow: "hidden",
+          position: "relative",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          
           "&:hover": {
-            boxShadow: "0 18px 40px rgba(0,0,0,0.12)",
-            transform: "translateY(-4px)",
-            borderColor: "#d2d7ff",
+            borderColor: "#cbd5e1",
+            background: "#fafbfc",
+            transform: "translateY(-6px)",
+          },
+          
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: 60,
+            height: 60,
+            background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+            opacity: 0.06,
+            zIndex: 0,
+            borderRadius: "0 0 100% 0",
           },
         }}
       >
         {/* Thumbnail Section */}
-        <Box
-          sx={{
-            height: 160,
-            background:
-              "linear-gradient(135deg, #dbeafe 0%, #f0f4ff 100%)",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
+        <Box sx={{ height: 150, position: "relative", overflow: "hidden", zIndex: 1 }}>
           {thumbnail ? (
             <Box
               sx={{
@@ -71,7 +75,13 @@ export default function CvCard({
                 backgroundImage: `url(${thumbnail})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                filter: "brightness(0.85)",
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.2) 100%)",
+                },
               }}
             />
           ) : (
@@ -81,111 +91,110 @@ export default function CvCard({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "3.5rem",
-                opacity: 0.7,
-                color: "#6b7280",
+                background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
               }}
             >
-              📄
+              <Box sx={{ fontSize: "2.5rem", opacity: 0.5 }}>
+                📄
+              </Box>
             </Box>
           )}
         </Box>
 
         {/* Content */}
-        <CardContent
-          sx={{
-            px: 3,
-            py: 2.5,
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <CardContent sx={{ px: 2.5, py: 2.5, flexGrow: 1, pb: "0 !important", zIndex: 1 }}>
           <Typography
             variant="h6"
             fontWeight={700}
             sx={{
-              color: "#1e293b",
-              mb: 1,
+              color: "#0f172a",
+              mb: 1.5,
+              fontSize: "0.95rem",
+              lineHeight: 1.3,
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
+              letterSpacing: "-0.01em",
             }}
           >
             {title}
           </Typography>
 
           <Chip
-            icon={<AccessTimeIcon sx={{ fontSize: 16 }} />}
+            icon={<AccessTimeIcon sx={{ fontSize: 12, color: "#64748b" }} />}
             label={updatedAt}
             size="small"
             sx={{
-              mt: 0.5,
-              background: "#eef2ff",
-              color: "#4f46e5",
-              fontWeight: 600,
-              borderRadius: 2,
-              height: 26,
+              background: "#f8fafc",
+              color: "#475569",
+              fontWeight: 500,
+              fontSize: "0.7rem",
+              height: 22,
+              borderRadius: 11,
+              px: 1.5,
             }}
           />
         </CardContent>
 
         {/* Action Buttons */}
-        <CardActions
-          sx={{
-            px: 3,
-            pb: 2.5,
-            pt: 0,
-            gap: 1.5,
-          }}
-        >
-          <Button
-            fullWidth
-            variant="contained"
-            startIcon={<EditIcon />}
-            onClick={onEdit}
-            sx={{
-              py: 1.1,
-              fontWeight: 700,
-              borderRadius: 2.5,
-              textTransform: "none",
-              fontSize: "0.9rem",
-              background: "linear-gradient(135deg, #4f46e5, #4338ca)",
-              boxShadow: "0 3px 10px rgba(79, 70, 229, 0.35)",
-              "&:hover": {
-                background: "linear-gradient(135deg, #4338ca, #3730a3)",
-                boxShadow: "0 6px 18px rgba(79, 70, 229, 0.45)",
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            Edit
-          </Button>
+        <Box sx={{ px: 2.5, pb: 2.5, pt: 1.5, display: "flex", gap: 1, zIndex: 1 }}>
+          <motion.div whileTap={{ scale: 0.98 }}>
+            <Button
+              variant="contained"
+              startIcon={<EditIcon sx={{ fontSize: 16 }} />}
+              onClick={onEdit}
+              sx={{
+                py: 0.75,
+                px: 2,
+                fontWeight: 600,
+                borderRadius: 1.5,
+                textTransform: "none",
+                fontSize: "0.75rem",
+                height: 36,
+                minWidth: 80,
+                background: "#3b82f6",
+                color: "white",
+                boxShadow: "none",
+                "&:hover": {
+                  background: "#2563eb",
+                  boxShadow: "none",
+                  transform: "translateY(-1px)",
+                },
+              }}
+            >
+              Edit
+            </Button>
+          </motion.div>
 
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={onDelete}
-            sx={{
-              py: 1.1,
-              fontWeight: 700,
-              borderRadius: 2.5,
-              textTransform: "none",
-              fontSize: "0.9rem",
-              borderColor: "#ef4444",
-              color: "#dc2626",
-              "&:hover": {
-                background: "#fff1f2",
-                borderColor: "#dc2626",
-              },
-            }}
-          >
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+          <motion.div whileTap={{ scale: 0.98 }}>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon sx={{ fontSize: 16 }} />}
+              onClick={onDelete}
+              sx={{
+                py: 0.75,
+                px: 2,
+                fontWeight: 600,
+                borderRadius: 1.5,
+                textTransform: "none",
+                fontSize: "0.75rem",
+                height: 36,
+                minWidth: 80,
+                borderColor: "#f87171",
+                color: "#dc2626",
+                background: "transparent",
+                "&:hover": {
+                  background: "#fef2f2",
+                  borderColor: "#f87171",
+                },
+              }}
+            >
+              Delete
+            </Button>
+          </motion.div>
+        </Box>
+      </Box>
     </motion.div>
   );
 }

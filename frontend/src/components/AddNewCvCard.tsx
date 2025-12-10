@@ -1,53 +1,84 @@
-import { Box, Typography, Paper } from "@mui/material";
+// AddNewCvCard.tsx (updated with smaller fonts & professional alignment)
+import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { motion } from "framer-motion";
 
-export default function AddNewCvCard() {
+interface AddNewCvCardProps {
+  onClick: () => void;
+}
+
+export default function AddNewCvCard({ onClick }: AddNewCvCardProps) {
   return (
-    <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }}>
-      <Paper
-        elevation={0}
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <Box
+        onClick={onClick}
         sx={{
-          height: 260,
-          borderRadius: 4,
-          border: "2px dashed #d0d7e2",
-          background: "#ffffff",
+          height: 300,
+          borderRadius: 2,
+          border: "2px dashed #d1d5db",
+          background: "#fafbfc",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "column",
           cursor: "pointer",
-          transition: "0.2s",
+          position: "relative",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           "&:hover": {
-            borderColor: "#4A6CF7",
-            background: "#f7f9ff",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+            borderColor: "#3b82f6",
+            background: "#f8fafc",
+            transform: "translateY(-4px)",
           },
         }}
       >
         <Box
           sx={{
-            width: 60,
-            height: 60,
+            width: 56,
+            height: 56,
             borderRadius: "50%",
-            background: "#eef2ff",
+            background: "#eff6ff",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            mb: 2,
+            mb: 2.5,
           }}
         >
-          <AddIcon sx={{ fontSize: 32, color: "#4A6CF7" }} />
+          <AddIcon sx={{ 
+            fontSize: 28, 
+            color: "#3b82f6" 
+          }} />
         </Box>
 
-        <Typography fontWeight={700} fontSize="1.1rem">
+        <Typography 
+          variant="h6"
+          fontWeight={700} 
+          sx={{
+            fontSize: "1rem",
+            color: "#1e293b",
+            mb: 0.75,
+            letterSpacing: "-0.015em",
+            textAlign: "center",
+          }}
+        >
           Create New CV
         </Typography>
 
-        <Typography fontSize="0.85rem" color="text.secondary" mt={0.5}>
-          Start building a new resume
+        <Typography 
+          variant="body2"
+          sx={{
+            color: "#64748b",
+            fontSize: "0.8rem",
+            textAlign: "center",
+            px: 1.5,
+            lineHeight: 1.4,
+          }}
+        >
+          Start building your professional resume
         </Typography>
-      </Paper>
+      </Box>
     </motion.div>
   );
 }
